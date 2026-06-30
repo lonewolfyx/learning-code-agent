@@ -1,0 +1,40 @@
+{
+    "name": "learning-code-agent",
+    "type": "module",
+    "version": "0.0.0",
+    "packageManager": "pnpm@10.33.2",
+    "description": "",
+    "author": "",
+    "license": "ISC",
+    "keywords": [],
+    "scripts": {
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix",
+        "prepare": "simple-git-hooks"
+    },
+    "devDependencies": {
+        "@antfu/eslint-config": "^9.1.0",
+        "@lonewolfyx/tsconfig": "^0.0.6",
+        "@types/node": "^26.0.1",
+        "c12": "4.0.0-beta.5",
+        "eslint": "^10.6.0",
+        "jiti": "^2.7.0",
+        "nano-staged": "^1.0.2",
+        "picocolors": "^1.1.1",
+        "simple-git-hooks": "^2.13.1",
+        "tsdown": "^0.22.3",
+        "tsx": "^4.22.4",
+        "typescript": "^6.0.3"
+    },
+    "simple-git-hooks": {
+        "pre-commit": "npx nano-staged",
+        "commit-msg": "node scripts/verify-commit.js"
+    },
+    "nano-staged": {
+        "*": "eslint --fix"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org",
+        "access": "public"
+    }
+}
