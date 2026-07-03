@@ -1,5 +1,6 @@
 import type { IConfig } from '#/config'
 import { dirname, resolve } from 'node:path'
+import * as readline from 'node:readline'
 import { fileURLToPath } from 'node:url'
 import { loadDotenv } from 'c12'
 
@@ -15,5 +16,9 @@ export const resolveConfig = async (): Promise<IConfig> => {
         ANTHROPIC_AUTH_TOKEN: env.ANTHROPIC_AUTH_TOKEN!,
         ANTHROPIC_BASE_URL: env.ANTHROPIC_BASE_URL!,
         ANTHROPIC_MODEL: env.ANTHROPIC_MODEL!,
+        readline: readline.createInterface({
+            input: process.stdin,
+            output: process.stdout,
+        }),
     }
 }
