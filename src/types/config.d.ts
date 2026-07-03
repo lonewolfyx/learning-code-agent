@@ -1,4 +1,4 @@
-import type { Interface } from 'node:readline'
+import type { Interface } from 'node:readline/promises'
 
 export interface IConfig {
     ANTHROPIC_AUTH_TOKEN: string
