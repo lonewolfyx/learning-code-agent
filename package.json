@@ -10,11 +10,14 @@
     "scripts": {
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
-        "prepare": "simple-git-hooks"
+        "prepare": "simple-git-hooks",
+        "s01": "tsx ./src/agents/s01.ts"
     },
     "devDependencies": {
         "@antfu/eslint-config": "^9.1.0",
+        "@anthropic-ai/sdk": "^0.107.0",
         "@lonewolfyx/tsconfig": "^0.0.6",
+        "@lonewolfyx/utils": "^0.0.4",
         "@types/node": "^26.0.1",
         "c12": "4.0.0-beta.5",
         "eslint": "^10.6.0",
