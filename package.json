@@ -11,7 +11,8 @@
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
         "prepare": "simple-git-hooks",
-        "s01": "tsx ./src/sessions/s01.ts"
+        "s01": "tsx ./src/sessions/s01.ts",
+        "s02": "tsx ./src/sessions/s02.ts"
     },
     "devDependencies": {
         "@antfu/eslint-config": "^9.1.0",
