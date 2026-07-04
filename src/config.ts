@@ -1,8 +1,9 @@
 import type { IConfig } from '#/config'
 import { dirname, resolve } from 'node:path'
-import * as readline from 'node:readline'
+import * as readline from 'node:readline/promises'
 import { fileURLToPath } from 'node:url'
 import { loadDotenv } from 'c12'
+import { createSessionId } from '@/shared/utils.ts'
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -20,5 +21,7 @@ export const resolveConfig = async (): Promise<IConfig> => {
             input: process.stdin,
             output: process.stdout,
         }),
+        messages: [],
+        sessionId: createSessionId(),
     }
 }
