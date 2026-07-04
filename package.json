@@ -28,7 +28,8 @@
         "tsdown": "^0.22.3",
         "tsx": "^4.22.4",
         "typescript": "^6.0.3",
-        "uuid": "^14.0.1"
+        "uuid": "^14.0.1",
+        "zod": "^4.4.3"
     },
     "simple-git-hooks": {
         "pre-commit": "npx nano-staged",
