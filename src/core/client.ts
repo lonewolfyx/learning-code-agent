@@ -1,10 +1,13 @@
-import type { Message, MessageParam } from '@anthropic-ai/sdk/resources'
+import type { Message, MessageParam, ToolResultBlockParam, ToolUseBlock } from '@anthropic-ai/sdk/resources'
 import type { IConfig } from '#/config'
+import type { toolHandlerNames } from '#/tools'
 import { Anthropic } from '@anthropic-ai/sdk'
 import { rootDir } from '@/constant.ts'
-import { tools } from '@/tools'
+import { tools, toolsHandler } from '@/tools'
 
 const DEFAULT_MAX_TOKENS = 8192
+
+const isToolName = (name: string): name is toolHandlerNames => name in toolsHandler
 
 export class LLMClient {
     private readonly client: Anthropic
@@ -23,12 +26,32 @@ export class LLMClient {
 
     async chat(messages: MessageParam[]): Promise<Message> {
         return this.client.messages.create({
-            // tools: this.conf.tools,
             tools,
             max_tokens: this.maxTokens,
             system: `You are a coding agent at ${rootDir}, use tools to solve tasks. Act, don't explain.`,
             messages,
             model: this.model,
         })
+    }
+
+    async runTools(toolUse: ToolUseBlock): Promise<ToolResultBlockParam> {
+        const toolsName = toolUse.name
+        if (!isToolName(toolsName)) {
+            return {
+                content: `Unknown tool: ${toolsName}`,
+                is_error: true,
+                tool_use_id: toolUse.id,
+                type: 'tool_result',
+            }
+        }
+
+        const result = await toolsHandler[toolsName]!(toolUse.input as any)
+
+        return {
+            content: result.content,
+            is_error: result.isError,
+            tool_use_id: toolUse.id,
+            type: 'tool_result',
+        }
     }
 }
