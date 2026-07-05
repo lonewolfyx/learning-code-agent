@@ -1,6 +1,6 @@
 import type { MessageParam } from '@anthropic-ai/sdk/resources'
 import type { IOptions } from '#/config'
-import { resolveAgentContent } from '@/core/core.ts'
+import { printAgentText, resolveAgentContent } from '@/core/core.ts'
 import { writeMessageLog } from '@/core/logger.ts'
 
 export const runAgentLoop = async (options: IOptions): Promise<void> => {
@@ -32,12 +32,14 @@ export const runAgentLoop = async (options: IOptions): Promise<void> => {
             messages.push(assistantMessage)
             await writeMessageLog(config, assistantMessage)
 
-            // 处理 agent 返回的内容
-            await resolveAgentContent(messages, client, config, answer)
+            printAgentText(answer)
 
             // 非 tool_use 退出循环
             if (answer.stop_reason !== 'tool_use')
                 break
+
+            // 处理 agent 返回的内容
+            await resolveAgentContent(messages, client, config, answer)
         }
     }
     catch (error) {
