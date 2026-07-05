@@ -2,6 +2,7 @@ import type { ContentBlock, Message, MessageParam } from '@anthropic-ai/sdk/reso
 import type { IConfig } from '#/config'
 import type { LLMClient } from '@/core/client.ts'
 import { writeMessageLog } from '@/core/logger.ts'
+import { validateToolsPermission } from '@/tools/permission.ts'
 
 export const resolveAgentContent = async (
     messages: MessageParam[],
@@ -17,6 +18,17 @@ export const resolveAgentContent = async (
         }
 
         if (type === 'tool_use') {
+            // 工具权限判断
+            if (!await validateToolsPermission(content, config)) {
+                const toolResultMessage: MessageParam = {
+                    content: `reject tool use, tools name ${content.name}`,
+                    role: 'system',
+                }
+                messages.push(toolResultMessage)
+                await writeMessageLog(config, toolResultMessage)
+                continue
+            }
+
             const toolResult = await client.runTools(content)
 
             const toolResultMessage: MessageParam = {
