@@ -4,6 +4,13 @@ import type { LLMClient } from '@/core/client.ts'
 import { writeMessageLog } from '@/core/logger.ts'
 import { validateToolsPermission } from '@/tools/permission.ts'
 
+export const printAgentText = (answer: Message): void => {
+    for (const content of answer.content as ContentBlock[]) {
+        if (content.type === 'text')
+            console.log(`agent answer >>> ${content.text}`)
+    }
+}
+
 export const resolveAgentContent = async (
     messages: MessageParam[],
     client: LLMClient,
@@ -12,10 +19,6 @@ export const resolveAgentContent = async (
 ): Promise<void> => {
     for (const content of answer.content as ContentBlock[]) {
         const type = content.type
-
-        if (type === 'text') {
-            console.log(`agent answer >>> ${content.text}`)
-        }
 
         if (type === 'tool_use') {
             // 工具权限判断
