@@ -3,7 +3,7 @@ import { exec } from 'node:child_process'
 import * as z from 'zod'
 import { rootDir } from '@/constant.ts'
 
-const bashCommand = z.object({
+export const bashCommand = z.object({
     command: z.string().describe('The shell command to run.'),
 })
 
